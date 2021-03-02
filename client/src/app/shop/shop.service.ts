@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {IBrand} from '../shared/interfaces/brand.interface';
 import {IProductType} from '../shared/interfaces/productType.interface';
 import {delay, map} from 'rxjs/operators';
+import {ShopParams} from '../shared/interfaces/shopParams';
 
 @Injectable({
   providedIn: 'root'
@@ -15,17 +16,17 @@ export class ShopService {
   constructor(private http: HttpClient) {
   }
 
-  getProducts(brandId?: number, typeId?: number, sort?: string): Observable<IPagination> {
+  getProducts(shopParams: ShopParams): Observable<IPagination> {
     let params: HttpParams = new HttpParams();
 
-    if (brandId) {
-      params = params.append('brandId', brandId.toString());
+    if (shopParams.brandId) {
+      params = params.append('brandId', shopParams.brandId.toString());
     }
-    if (typeId) {
-      params = params.append('typeId', typeId.toString());
+    if (shopParams.typeId) {
+      params = params.append('typeId', shopParams.typeId.toString());
     }
-    if (sort) {
-      params = params.append('sort', sort.toString());
+    if (shopParams.sort) {
+      params = params.append('sort', shopParams.sort.toString());
     }
 
     return this.http.get<IPagination>(this.baseUrl + 'products', {observe: 'response', params})
